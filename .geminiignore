@@ -1,0 +1,7 @@
+.git
+.gemini
+*.o
+*.bin
+*.iso
+*.log
+tmp/
