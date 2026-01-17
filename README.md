@@ -30,9 +30,17 @@ We successfully established the development environment required for OS developm
     *   **Implemented `linker.ld`:**
         *   Defined the entry point (`ENTRY(_start)`).
         *   Set the kernel load address to **1MB** (`0x100000`) to avoid BIOS/VGA conflicts.
-        *   Ordered sections to ensure the **Multiboot Header** appears first in the binary (critical for GRUB detection).
+        *   Ordered sections to ensure the **Multiboot Header** appears first in the binary.
         *   Aligned sections to 4KB (page boundaries) for future memory management compatibility.
-        *   Handled the `.bss` and `*(COMMON)` sections for uninitialized data.
+
+4.  **Bootstrapping - Phase 2 (Assembly Bootstrap):**
+    *   Researched the **Multiboot Specification** and the necessity of an assembly bootstrap.
+    *   **Implemented `src/arch/i386/boot.s` (NASM):**
+        *   Defined the **Multiboot Header** (Magic: `0x1BADB002`).
+        *   Allocated a **16KB Stack** in the `.bss` section (C cannot run without a stack).
+        *   Implemented the `_start` entry point to initialize the Stack Pointer (`esp`).
+        *   Passed Multiboot parameters (`eax`, `ebx`) to the C kernel.
+        *   Created an infinite `hlt` loop as a safety net if the kernel returns.
 
 ---
 
@@ -42,13 +50,7 @@ We successfully established the development environment required for OS developm
 - [x] **Setup Cross-Compiler (`i686-elf-gcc`)**
 - [x] **Create Project Structure**
 - [x] **Implement Linker Script (`linker.ld`)**
-- [ ] **Implement Assembly Bootstrap (`src/arch/i386/boot.s`)**
-    - [ ] Define Multiboot Header (Magic `0x1BADB002`, Flags, Checksum).
-    - [ ] Allocate Kernel Stack (16KB).
-    - [ ] Implement `_start` entry point.
-    - [ ] Disable interrupts (`cli`) and set up Stack Pointer (`esp`).
-    - [ ] Call `kernel_main`.
-    - [ ] Implement infinite halt loop.
+- [x] **Implement Assembly Bootstrap (`src/arch/i386/boot.s`)**
 - [ ] **Implement Minimal Kernel (`src/kernel/kernel.c`)**
     - [ ] Create VGA driver pointers (`0xB8000`).
     - [ ] Write "Hello World" or verification characters to video memory.
