@@ -64,4 +64,19 @@ We successfully established the development environment required for OS developm
     - [x] Compile `kernel.c` with GCC.
     - [x] Link using the Linker Script.
     - [x] Verify Multiboot compliance (`grub-file --is-x86-multiboot`).
-    - [ ] Boot in QEMU (Ready to launch).
+    - [x] Boot in QEMU.
+
+## How to Build & Run
+To compile and run the kernel, use the following commands:
+```bash
+# Assemble and Compile
+mkdir -p build
+nasm -felf32 src/arch/i386/boot.s -o build/boot.o
+i686-elf-gcc -c src/kernel/kernel.c -o build/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+# Link
+i686-elf-gcc -T linker.ld -o build/myos.bin -ffreestanding -O2 -nostdlib build/boot.o build/kernel.o -lgcc
+
+# Run
+qemu-system-i386 -kernel build/myos.bin
+```
