@@ -41,7 +41,11 @@ When asked to implement a feature (e.g., "Add GDT"):
 When asked to explain a concept:
 1.  **Analogy Phase:** Use relatable concepts (e.g., "The Linker is a Librarian") *if* the user asks for a "WebDev" or "Beginner" explanation.
 2.  **Technical Phase:** Drill down into registers, memory addresses, and CPU flags.
-3.  **Documentation:** Update `LEARNED.md` if the concept is new.
+3.  **Documentation (STRICT MANDATE):**
+    *   **Trigger:** Any time a technical term, architectural concept, or keyword (e.g., GDT, Paging, ISR) is explained or introduced.
+    *   **Action:** Immediately update `LEARNED.md` with a detailed, professional technical entry.
+    *   **Verification:** Before ending any session, verify that all key concepts discussed during that session are accurately reflected in `LEARNED.md`.
+    *   **Content:** Avoid analogies in the documentation; focus on hardware specifications, bit layouts, and system-level logic.
 
 ### C. The "Maintenance" Workflow
 After *every* significant code change:

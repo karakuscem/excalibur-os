@@ -48,3 +48,25 @@ A summary of technical concepts encountered during the Excalibur OS development.
 *   **Addressing:**
     *   Video memory is a linear array, not a 2D array.
     *   To access `(row, col)`, we calculate the index: `index = row * WIDTH + col`.
+
+## 6. Global Descriptor Table (GDT)
+*   **Purpose:** The GDT is a data structure required by the x86 architecture in Protected Mode to define memory segments. It controls **Access Privileges** (Ring 0 vs Ring 3) and **Memory Limits**.
+*   **Segmentation vs. Paging:**
+    *   **Segmentation:** Breaks memory into logical variable-sized blocks (Segments).
+    *   **Paging:** Breaks memory into fixed-size 4KB blocks (Pages).
+    *   *Modern Usage:* We use a **Flat Memory Model**, where all segments (Code, Data) start at `0` and extend to `4GB`. We effectively "disable" segmentation logic by making it overlap everything, relying on Paging for actual protection later.
+*   **GDT Entry Structure (8 Bytes):**
+    *   **Limit (20 bits):** The size of the segment.
+    *   **Base (32 bits):** The starting address of the segment (usually 0).
+    *   **Access Byte:** Defines permissions.
+        *   **Pr (Present):** Must be 1.
+        *   **Privl (Privilege):** 00 for Kernel, 11 for User.
+        *   **Ex (Executable):** 1 for Code, 0 for Data.
+        *   **RW (Read/Write):** Readable for code, Writable for data.
+    *   **Flags:** Granularity (4KB blocks vs 1 byte blocks) and Size (32-bit vs 16-bit).
+*   **Required Entries:**
+    1.  **Null Descriptor:** All zeros (CPU requirement).
+    2.  **Kernel Code:** Base=0, Limit=4GB, Ring 0, Executable.
+    3.  **Kernel Data:** Base=0, Limit=4GB, Ring 0, Writable.
+    4.  **User Code:** Base=0, Limit=4GB, Ring 3, Executable.
+    5.  **User Data:** Base=0, Limit=4GB, Ring 3, Writable.
