@@ -45,6 +45,8 @@ We successfully established the development environment required for OS developm
     *   **Verification:**
         *   Confirmed Multiboot compliance using `grub-file`.
 
+![Excalibur OS Boot Screenshot](Pictures/Hello%20message.png)
+
 ---
 
 ## Current Status & To-Do
