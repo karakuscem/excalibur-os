@@ -33,14 +33,17 @@ We successfully established the development environment required for OS developm
         *   Ordered sections to ensure the **Multiboot Header** appears first in the binary.
         *   Aligned sections to 4KB (page boundaries) for future memory management compatibility.
 
-4.  **Bootstrapping - Phase 2 (Assembly Bootstrap):**
-    *   Researched the **Multiboot Specification** and the necessity of an assembly bootstrap.
-    *   **Implemented `src/arch/i386/boot.s` (NASM):**
-        *   Defined the **Multiboot Header** (Magic: `0x1BADB002`).
-        *   Allocated a **16KB Stack** in the `.bss` section (C cannot run without a stack).
-        *   Implemented the `_start` entry point to initialize the Stack Pointer (`esp`).
-        *   Passed Multiboot parameters (`eax`, `ebx`) to the C kernel.
-        *   Created an infinite `hlt` loop as a safety net if the kernel returns.
+5.  **Phase 2 Completion (Kernel & Build):**
+    *   **Implemented `src/kernel/kernel.c`:**
+        *   Created VGA driver utilizing Memory Mapped I/O at `0xB8000`.
+        *   Implemented `terminal_initialize` and `terminal_write_string`.
+        *   Fixed logic errors (off-by-one loops, pointer arithmetic) to ensure stability.
+    *   **Build Process:**
+        *   Assembled `boot.s` (NASM).
+        *   Compiled `kernel.c` (`i686-elf-gcc`).
+        *   Linked binaries (`linker.ld`).
+    *   **Verification:**
+        *   Confirmed Multiboot compliance using `grub-file`.
 
 ---
 
@@ -51,12 +54,12 @@ We successfully established the development environment required for OS developm
 - [x] **Create Project Structure**
 - [x] **Implement Linker Script (`linker.ld`)**
 - [x] **Implement Assembly Bootstrap (`src/arch/i386/boot.s`)**
-- [ ] **Implement Minimal Kernel (`src/kernel/kernel.c`)**
-    - [ ] Create VGA driver pointers (`0xB8000`).
-    - [ ] Write "Hello World" or verification characters to video memory.
-- [ ] **Build & Run**
-    - [ ] Assemble `boot.s` with NASM.
-    - [ ] Compile `kernel.c` with GCC.
-    - [ ] Link using the Linker Script.
-    - [ ] Verify Multiboot compliance (`grub-file --is-x86-multiboot`).
-    - [ ] Boot in QEMU.
+- [x] **Implement Minimal Kernel (`src/kernel/kernel.c`)**
+    - [x] Create VGA driver pointers (`0xB8000`).
+    - [x] Write "Hello World" or verification characters to video memory.
+- [x] **Build & Run**
+    - [x] Assemble `boot.s` with NASM.
+    - [x] Compile `kernel.c` with GCC.
+    - [x] Link using the Linker Script.
+    - [x] Verify Multiboot compliance (`grub-file --is-x86-multiboot`).
+    - [ ] Boot in QEMU (Ready to launch).

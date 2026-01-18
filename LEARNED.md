@@ -35,3 +35,16 @@ A summary of technical concepts encountered during the Excalibur OS development.
     *   Arguments are passed by **pushing** them onto the stack in reverse order.
     *   `push ebx` (Pointer) -> `push eax` (Magic) -> `call kernel_main`.
 *   **Safety Net:** An infinite loop (`cli`, `hlt`, `jmp`) is required at the end of `_start` to prevent the CPU from executing random memory if the kernel returns.
+
+## 5. Kernel C (`kernel.c`)
+*   **Memory Mapped I/O (MMIO):**
+    *   The CPU treats specific memory addresses as hardware control registers.
+    *   **VGA Text Buffer:** Located at `0xB8000`. Writing to this address directly modifies the pixels on the screen.
+*   **The `volatile` Keyword:**
+    *   Crucial for MMIO. It tells the compiler "Do not optimize reads/writes to this variable; they have side effects you don't understand (like appearing on a screen)." without it, the compiler might delete our "useless" writes.
+*   **VGA Character Structure (16-bit):**
+    *   **Lower 8 bits:** ASCII Character.
+    *   **Upper 8 bits:** Color Attribute (4 bits foreground, 4 bits background).
+*   **Addressing:**
+    *   Video memory is a linear array, not a 2D array.
+    *   To access `(row, col)`, we calculate the index: `index = row * WIDTH + col`.

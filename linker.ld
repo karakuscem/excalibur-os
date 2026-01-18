@@ -6,10 +6,10 @@ SECTIONS
   /*Start kernel at 1MB, 0-1MB Used by bios and hardware*/
   . = 1M;
   /*Multiboot header and code part*/
-  .text : ALIGN(4K) /*ALlost+found/
+  .text : ALIGN(4K)
   {
     /*Multiboot need to be first*/
-    KEEP(*(.multiboot))
+    *(.multiboot)
     *(.text)
   }
   /*Read only data strings etc*/
