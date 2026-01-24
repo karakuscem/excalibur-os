@@ -36,21 +36,25 @@ We transitioned from a bootable prototype to building the kernel's foundational 
 ### Phase 3: Kernel Core
 - [ ] **Global Descriptor Table (GDT)**
     - [x] Define GDT structures in `include/gdt.h`.
-    - [ ] Implement `gdt_set_gate` and `init_gdt` in `src/kernel/gdt.c`.
-    - [ ] Implement `gdt_flush` in `src/arch/i386/gdt.s`.
+    - [x] Implement `gdt_set_gate` and `init_gdt` in `src/kernel/gdt.c`.
+    - [x] Implement `gdt_flush` in `src/arch/i386/gdt.s`.
 - [ ] **Interrupt Descriptor Table (IDT)**
 - [ ] **Interrupt Service Routines (ISRs)**
 
 ## How to Build & Run
 To compile and run the kernel, use the following commands:
 ```bash
-# Assemble and Compile
+# Assemble Assembly Files
 mkdir -p build
 nasm -felf32 src/arch/i386/boot.s -o build/boot.o
+nasm -felf32 src/arch/i386/gdt.s -o build/gdt_asm.o
+
+# Compile C Files
 i686-elf-gcc -c src/kernel/kernel.c -o build/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+i686-elf-gcc -c src/kernel/gdt.c -o build/gdt_c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 # Link
-i686-elf-gcc -T linker.ld -o build/myos.bin -ffreestanding -O2 -nostdlib build/boot.o build/kernel.o -lgcc
+i686-elf-gcc -T linker.ld -o build/myos.bin -ffreestanding -O2 -nostdlib build/boot.o build/kernel.o build/gdt_c.o build/gdt_asm.o -lgcc
 
 # Run
 qemu-system-i386 -kernel build/myos.bin

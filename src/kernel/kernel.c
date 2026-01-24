@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include "../../include/gdt.h"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -74,6 +75,7 @@ void terminal_write_string(const char* data) {
 }
 
 void kernel_main(unsigned long magic, unsigned long addr){
+  init_gdt();
   terminal_initialize();
   terminal_write_string("Hello, Excalibur OS!");
 }

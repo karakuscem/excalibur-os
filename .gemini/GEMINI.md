@@ -75,9 +75,9 @@ After *every* significant code change:
 
 ### Phase 3: Kernel Core (Next)
 - [ ] **Global Descriptor Table (GDT)**
-    - [ ] Define GDT entry structure (`limit`, `base`, `access`, `flags`).
-    - [ ] Create GDT pointer structure.
-    - [ ] Implement `gdt_flush` in assembly to load GDTR and reload segment registers.
+    - [x] Define GDT entry structure (`limit`, `base`, `access`, `flags`).
+    - [x] Create GDT pointer structure.
+    - [x] Implement `gdt_flush` in assembly to load GDTR and reload segment registers.
 - [ ] **Interrupt Descriptor Table (IDT)**
     - [ ] Define IDT entry structure.
     - [ ] Create IDT pointer structure.

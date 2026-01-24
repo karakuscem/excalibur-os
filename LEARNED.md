@@ -70,3 +70,11 @@ A summary of technical concepts encountered during the Excalibur OS development.
     3.  **Kernel Data:** Base=0, Limit=4GB, Ring 0, Writable.
     4.  **User Code:** Base=0, Limit=4GB, Ring 3, Executable.
     5.  **User Data:** Base=0, Limit=4GB, Ring 3, Writable.
+
+## 7. Loading the GDT (GDT Flush)
+*   **The `lgdt` Instruction:** A privileged instruction that loads the address and size of the GDT from a 6-byte pointer into the CPU's **GDTR** register.
+*   **Segment Selectors:** In Protected Mode, segment registers (CS, DS, etc.) hold "selectors" which are indices into the GDT multiplied by 8 (the size of an entry).
+    *   **0x08:** Points to the first entry (Kernel Code).
+    *   **0x10:** Points to the second entry (Kernel Data).
+*   **The Far Jump:** The `CS` (Code Segment) register cannot be modified directly with `mov`. A "Far Jump" (`jmp segment:offset`) is required to force the CPU to reload the `CS` register and clear the instruction pipeline.
+*   **Data Segment Reload:** All data-related segment registers (`DS`, `ES`, `FS`, `GS`, `SS`) must be manually reloaded with the new data segment selector (`0x10`) immediately after `lgdt`.
